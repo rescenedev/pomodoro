@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Pomodoro — a minimal macOS menu-bar timer</title>
-<meta name="description" content="A minimal, native macOS menu-bar Pomodoro timer built with SwiftUI." />
+<title>Pomodoro — a minimal timer for Mac, iPhone &amp; Apple Watch</title>
+<meta name="description" content="A minimal, native Pomodoro timer for macOS, iPhone, and Apple Watch, built with SwiftUI." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <style>
   :root {
@@ -59,6 +59,12 @@
   .btn-support { color: #1a1500; background: #ffd24a; }
   .btn-support:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(255, 210, 74, .35); }
   .cta { flex-wrap: wrap; justify-content: center; gap: 12px; }
+  .soon {
+    margin-top: 18px; color: var(--muted); font-size: 14px;
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 1px dashed rgba(255,255,255,.18); border-radius: 999px;
+    padding: 8px 16px;
+  }
   .brew {
     margin-top: 22px; position: relative;
     display: inline-flex; align-items: center; gap: 10px;
@@ -86,7 +92,7 @@
   }
   .features {
     margin-top: 72px; display: grid; gap: 16px;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     text-align: left;
   }
   @media (max-width: 760px) { .features { grid-template-columns: 1fr; } }
@@ -101,13 +107,15 @@
   <main>
     <div class="tomato">🍅</div>
     <h1>Pomodoro</h1>
-    <p class="tagline">A minimal, native macOS menu-bar timer. Focus, break, repeat — right from your menu bar, no dock clutter.</p>
+    <p class="tagline">A minimal, native Pomodoro timer for macOS, iPhone, and Apple Watch. Focus, break, repeat — on your menu bar, in your pocket, and on your wrist.</p>
 
     <div class="cta">
       <a class="btn btn-primary" href="https://github.com/rescenedev/pomodoro/releases/latest/download/Pomodoro.dmg">⬇ Download for macOS</a>
       <a class="btn btn-ghost" href="https://github.com/rescenedev/pomodoro">View on GitHub</a>
       <a class="btn btn-support" href="https://fairy.hada.io/@lumen" target="_blank" rel="noopener">💛 Support</a>
     </div>
+
+    <p class="soon">📱⌚ iPhone &amp; Apple Watch — coming soon to the App Store</p>
 
     <button class="brew" type="button" onclick="copyBrew()" title="Click to copy">
       <code id="brewCmd">brew tap rescenedev/tap &amp;&amp; brew install --cask rescenedev/tap/pomodoro</code>
@@ -121,20 +129,28 @@
 
     <section class="features">
       <div class="feature">
-        <h3>Lives in the menu bar</h3>
-        <p>A countdown right in your menu bar — no dock icon, no window in the way.</p>
+        <h3>🖥️ Menu bar on Mac</h3>
+        <p>A countdown right in your macOS menu bar — no dock icon, no window in the way.</p>
       </div>
       <div class="feature">
-        <h3>Focus &amp; break cycle</h3>
+        <h3>📱 Full screen on iPhone</h3>
+        <p>A focused full-screen timer with a big progress ring and one-tap session switching.</p>
+      </div>
+      <div class="feature">
+        <h3>⌚ On your wrist</h3>
+        <p>Start, pause, and switch sessions straight from your Apple Watch.</p>
+      </div>
+      <div class="feature">
+        <h3>🔒 Live Activity &amp; Dynamic Island</h3>
+        <p>Watch the countdown on your iPhone Lock Screen and in the Dynamic Island — no need to open the app.</p>
+      </div>
+      <div class="feature">
+        <h3>🔁 Focus &amp; break cycle</h3>
         <p>Automatic focus → short break → long break, with a configurable cycle.</p>
       </div>
       <div class="feature">
-        <h3>Your durations</h3>
+        <h3>⏱️ Your durations</h3>
         <p>Type in exactly the minutes you want. Auto-start the next session if you like.</p>
-      </div>
-      <div class="feature">
-        <h3>Completion sound</h3>
-        <p>Pick a built-in chime or your own audio file — with a live preview.</p>
       </div>
     </section>
   </main>
