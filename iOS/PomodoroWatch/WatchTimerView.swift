@@ -1,80 +1,71 @@
 import SwiftUI
 
-/// Compact watchOS timer: session pills, progress ring, start/pause + reset.
+/// Dead-simple watchOS timer: one big tappable countdown. Tap anywhere to
+/// start/pause. Switch session from the top menu. A slim bar shows progress.
 struct WatchTimerView: View {
     @ObservedObject var timer: PomodoroTimer
     @ObservedObject var settings: PomodoroSettings
+    @State private var pickingSession = false
 
     private var accent: SessionType { timer.session }
 
     var body: some View {
-        VStack(spacing: 5) {
-            sessionPills
-            ring
-            controls
-        }
-        .padding(.horizontal, 4)
-        .padding(.bottom, 2)
-        .containerBackground(accent.accentColor.opacity(0.18).gradient, for: .navigation)
-    }
+        NavigationStack {
+            VStack(spacing: 4) {
+                Spacer(minLength: 0)
 
-    private var sessionPills: some View {
-        HStack(spacing: 3) {
-            ForEach(SessionType.allCases) { session in
-                let selected = session == timer.session
-                Text(session.shortTitle)
-                    .font(.system(size: 11, weight: .semibold))
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.7)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 3)
-                    .background { if selected { Capsule().fill(session.gradient) } }
-                    .foregroundStyle(selected ? .white : .secondary)
-                    .contentShape(Capsule())
-                    .onTapGesture { timer.select(session) }
-            }
-        }
-    }
-
-    private var ring: some View {
-        ZStack {
-            Circle().stroke(Color.white.opacity(0.15), lineWidth: 6)
-            Circle()
-                .trim(from: 0, to: timer.progress)
-                .stroke(accent.gradient, style: StrokeStyle(lineWidth: 6, lineCap: .round))
-                .rotationEffect(.degrees(-90))
-                .animation(.linear(duration: 0.25), value: timer.progress)
-            VStack(spacing: 0) {
                 Text(timer.formattedRemaining)
-                    .font(.system(size: 28, weight: .bold, design: .rounded))
+                    .font(.system(size: 80, weight: .bold, design: .rounded))
                     .monospacedDigit()
+                    .minimumScaleFactor(0.4)
+                    .lineLimit(1)
+                    .foregroundStyle(timer.isRunning
+                        ? AnyShapeStyle(accent.gradient)
+                        : AnyShapeStyle(Color.primary))
                     .contentTransition(.numericText())
                     .animation(.snappy, value: timer.formattedRemaining)
+
                 Text(timer.session.title.uppercased())
-                    .font(.system(size: 9, weight: .semibold))
-                    .tracking(1)
+                    .font(.system(size: 11, weight: .semibold))
+                    .tracking(1.5)
                     .foregroundStyle(.secondary)
+
+                Spacer(minLength: 0)
+
+                progressBar
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .padding(.horizontal, 8)
+            .padding(.bottom, 6)
+            .contentShape(Rectangle())
+            .onTapGesture { timer.toggle() }
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        pickingSession = true
+                    } label: {
+                        Image(systemName: accent.symbolName)
+                            .foregroundStyle(accent.accentColor)
+                    }
+                }
+            }
+            .confirmationDialog("Session", isPresented: $pickingSession, titleVisibility: .visible) {
+                ForEach(SessionType.allCases) { session in
+                    Button(session.title) { timer.select(session) }
+                }
             }
         }
-        .frame(maxHeight: .infinity)
-        .onTapGesture { timer.toggle() }
     }
 
-    private var controls: some View {
-        HStack(spacing: 8) {
-            Button(action: timer.reset) {
-                Image(systemName: "arrow.counterclockwise")
+    private var progressBar: some View {
+        GeometryReader { geo in
+            ZStack(alignment: .leading) {
+                Capsule().fill(Color.white.opacity(0.12))
+                Capsule().fill(accent.gradient)
+                    .frame(width: geo.size.width * timer.progress)
             }
-            .buttonStyle(.bordered)
-            .tint(.gray)
-            .frame(width: 48)
-
-            Button(action: timer.toggle) {
-                Image(systemName: timer.isRunning ? "pause.fill" : "play.fill")
-                    .frame(maxWidth: .infinity)
-            }
-            .buttonStyle(.borderedProminent)
-            .tint(accent.accentColor)
         }
+        .frame(height: 4)
+        .animation(.linear(duration: 0.25), value: timer.progress)
     }
 }
