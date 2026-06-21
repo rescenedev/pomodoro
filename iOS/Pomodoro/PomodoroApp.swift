@@ -11,8 +11,14 @@ struct PomodoroApp: App {
         let notifier = NotificationService()
         notifier.requestAuthorization()
         let haptics = Haptics()
+        let liveActivity = LiveActivityController()
         _settings = StateObject(wrappedValue: settings)
-        _timer = StateObject(wrappedValue: PomodoroTimer(settings: settings, notifier: notifier, haptics: haptics))
+        _timer = StateObject(wrappedValue: PomodoroTimer(
+            settings: settings,
+            notifier: notifier,
+            haptics: haptics,
+            liveActivity: liveActivity
+        ))
     }
 
     var body: some Scene {

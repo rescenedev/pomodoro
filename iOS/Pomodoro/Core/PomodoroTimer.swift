@@ -19,14 +19,21 @@ final class PomodoroTimer: ObservableObject {
     private let settings: PomodoroSettings
     private let notifier: NotificationService
     private let haptics: Haptics
+    private let liveActivity: LiveActivityController
     private var ticker: AnyCancellable?
     /// Wall-clock deadline; recomputed on every start/resume to avoid timer drift.
     private var deadline: Date?
 
-    init(settings: PomodoroSettings, notifier: NotificationService, haptics: Haptics) {
+    init(
+        settings: PomodoroSettings,
+        notifier: NotificationService,
+        haptics: Haptics,
+        liveActivity: LiveActivityController
+    ) {
         self.settings = settings
         self.notifier = notifier
         self.haptics = haptics
+        self.liveActivity = liveActivity
         self.remaining = settings.duration(for: .focus)
     }
 
@@ -55,9 +62,11 @@ final class PomodoroTimer: ObservableObject {
     func start() {
         guard !isRunning else { return }
         isRunning = true
-        deadline = Date().addingTimeInterval(TimeInterval(remaining))
+        let deadline = Date().addingTimeInterval(TimeInterval(remaining))
+        self.deadline = deadline
         scheduleTicker()
-        notifier.scheduleSessionEnd(session, at: deadline!, playSound: settings.playSound)
+        notifier.scheduleSessionEnd(session, at: deadline, playSound: settings.playSound)
+        liveActivity.start(session: session, deadline: deadline)
     }
 
     func pause() {
@@ -68,18 +77,21 @@ final class PomodoroTimer: ObservableObject {
         ticker?.cancel()
         ticker = nil
         notifier.cancelScheduled()
+        liveActivity.pause(session: session, remaining: remaining)
     }
 
     /// Reset the current session back to its full duration.
     func reset() {
         pause()
         remaining = settings.duration(for: session)
+        liveActivity.end()
     }
 
     /// Skip to the next session in the cycle without completing the current one.
     func skip() {
         pause()
         advance(countingCurrent: false)
+        liveActivity.end()
     }
 
     /// Manually switch to a specific session type (resets the countdown).
@@ -88,6 +100,7 @@ final class PomodoroTimer: ObservableObject {
         pause()
         session = newSession
         remaining = settings.duration(for: newSession)
+        liveActivity.end()
     }
 
     /// Re-read durations from settings; refresh remaining if idle.
@@ -138,6 +151,8 @@ final class PomodoroTimer: ObservableObject {
         advance(countingCurrent: true)
         if settings.autoStartNext {
             start()
+        } else {
+            liveActivity.end()
         }
     }
 
