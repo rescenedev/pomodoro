@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pomodoro — a minimal macOS menu-bar timer</title>
+<meta name="description" content="A minimal, native macOS menu-bar Pomodoro timer built with SwiftUI." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<style>
+  :root {
+    --bg: #16161a;
+    --bg-soft: #1f1f26;
+    --text: #f4f4f6;
+    --muted: #a0a0ab;
+    --accent: #fa5c6b;
+    --accent-2: #f58c4d;
+    --radius: 16px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: radial-gradient(1200px 600px at 50% -10%, #2a2230 0%, var(--bg) 55%);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 0 24px;
+    -webkit-font-smoothing: antialiased;
+  }
+  main { max-width: 860px; width: 100%; padding: 96px 0 64px; }
+  .tomato { font-size: 56px; line-height: 1; margin-bottom: 20px; }
+  h1 {
+    font-size: clamp(40px, 7vw, 68px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    background: linear-gradient(120deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .tagline { color: var(--muted); font-size: clamp(16px, 2.5vw, 20px); margin: 16px auto 36px; max-width: 540px; }
+  .cta { display: inline-flex; align-items: center; gap: 10px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 16px; font-weight: 600;
+    padding: 14px 26px; border-radius: 999px;
+    text-decoration: none; transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .btn-primary {
+    color: #fff;
+    background: linear-gradient(120deg, var(--accent), var(--accent-2));
+    box-shadow: 0 10px 30px rgba(250, 92, 107, .35);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 38px rgba(250, 92, 107, .45); }
+  .btn-ghost { color: var(--text); border: 1px solid rgba(255,255,255,.16); }
+  .btn-ghost:hover { border-color: rgba(255,255,255,.4); }
+  .brew {
+    margin-top: 22px; display: inline-block;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 14px; color: var(--muted);
+    background: var(--bg-soft); border: 1px solid rgba(255,255,255,.08);
+    padding: 10px 16px; border-radius: 10px;
+  }
+  .brew code { color: var(--text); }
+  .shot { margin: 64px auto 0; width: 280px; max-width: 80%; }
+  .shot img {
+    width: 100%; border-radius: 22px;
+    box-shadow: 0 30px 80px rgba(0,0,0,.55);
+    border: 1px solid rgba(255,255,255,.08);
+  }
+  .features {
+    margin-top: 72px; display: grid; gap: 22px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    text-align: left;
+  }
+  .feature { background: var(--bg-soft); border: 1px solid rgba(255,255,255,.06); border-radius: var(--radius); padding: 22px; }
+  .feature h3 { font-size: 16px; margin-bottom: 6px; }
+  .feature p { color: var(--muted); font-size: 14px; line-height: 1.5; }
+  footer { color: var(--muted); font-size: 13px; padding: 48px 0 40px; }
+  footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+  <main>
+    <div class="tomato">🍅</div>
+    <h1>Pomodoro</h1>
+    <p class="tagline">A minimal, native macOS menu-bar timer. Focus, break, repeat — right from your menu bar, no dock clutter.</p>
+
+    <div class="cta">
+      <a class="btn btn-primary" href="https://github.com/rescenedev/pomodoro/releases/latest/download/Pomodoro.dmg">⬇ Download for macOS</a>
+      <a class="btn btn-ghost" href="https://github.com/rescenedev/pomodoro">View on GitHub</a>
+    </div>
+
+    <div class="brew">
+      <code>brew install --cask rescenedev/tap/pomodoro</code>
+    </div>
+
+    <div class="shot">
+      <img src="screenshot.png" alt="Pomodoro menu-bar popover showing a focus timer" />
+    </div>
+
+    <section class="features">
+      <div class="feature">
+        <h3>Lives in the menu bar</h3>
+        <p>A countdown right in your menu bar — no dock icon, no window in the way.</p>
+      </div>
+      <div class="feature">
+        <h3>Focus &amp; break cycle</h3>
+        <p>Automatic focus → short break → long break, with a configurable cycle.</p>
+      </div>
+      <div class="feature">
+        <h3>Your durations</h3>
+        <p>Type in exactly the minutes you want. Auto-start the next session if you like.</p>
+      </div>
+      <div class="feature">
+        <h3>Completion sound</h3>
+        <p>Pick a built-in chime or your own audio file — with a live preview.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Built with SwiftUI · <a href="https://github.com/rescenedev/pomodoro">rescenedev/pomodoro</a>
+  </footer>
+</body>
+</html>
