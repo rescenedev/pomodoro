@@ -3,6 +3,11 @@
 A lightweight native macOS **menu-bar** Pomodoro timer, built with SwiftUI's `MenuBarExtra`.
 No dock icon, no window clutter — it lives entirely in your menu bar.
 
+**🌐 Website: https://rescenedev.github.io/pomodoro/**
+
+Also built for **iPhone** (full-screen timer with Live Activity & Dynamic Island)
+and **Apple Watch** — coming soon to the App Store.
+
 ## Features
 
 - **Focus / Short Break / Long Break** cycle with automatic transitions
