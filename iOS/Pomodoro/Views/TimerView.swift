@@ -29,6 +29,19 @@ struct TimerView: View {
         .sheet(isPresented: $showingSettings) {
             SettingsView(settings: settings) { timer.applySettingsChange() }
         }
+        .onAppear(perform: applyScreenshotStateIfNeeded)
+    }
+
+    /// Deterministic state setup for App Store screenshots, driven by env vars
+    /// (e.g. `SIMCTL_CHILD_SCREENSHOT_SESSION=short`). No effect in normal use.
+    private func applyScreenshotStateIfNeeded() {
+        let env = ProcessInfo.processInfo.environment
+        switch env["SCREENSHOT_SESSION"] {
+        case "short": timer.select(.shortBreak)
+        case "long": timer.select(.longBreak)
+        default: break
+        }
+        if env["SCREENSHOT_SETTINGS"] == "1" { showingSettings = true }
     }
 
     // MARK: - Background
