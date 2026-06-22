@@ -18,6 +18,21 @@ enum PreviewRenderer {
         let settingsView = SettingsView(settings: settings, onChange: {})
         render(view: settingsView, name: "settings", into: outDir)
 
+        // Floating always-on-top panel
+        let floatTimer = PomodoroTimer(settings: settings, notifier: NotificationService())
+        floatTimer.applyPreview(session: .focus, remaining: 18 * 60 + 30, running: true, completedFocus: 2)
+        render(view: FloatingTimerView(timer: floatTimer), name: "floating", into: outDir)
+
+        // Stats with sample data (isolated defaults so real data isn't touched)
+        let sampleStats = StatsStore(defaults: UserDefaults(suiteName: "preview-stats")!)
+        let cal = Calendar.current
+        for offset in [0, 0, 0, 1, 2, 3, 3, 10, 15, 20] {
+            let day = cal.date(byAdding: .day, value: -offset, to: Date())!
+            sampleStats.recordFocus(minutes: 25, at: day)
+        }
+        render(view: StatsView(stats: sampleStats), name: "stats", into: outDir)
+        UserDefaults.standard.removePersistentDomain(forName: "preview-stats")
+
         print("Rendered previews to \(outDir.path)")
         exit(0)
     }

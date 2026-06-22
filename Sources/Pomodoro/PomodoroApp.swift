@@ -3,14 +3,17 @@ import SwiftUI
 struct PomodoroApp: App {
     @StateObject private var settings: PomodoroSettings
     @StateObject private var timer: PomodoroTimer
+    @StateObject private var stats: StatsStore
     private let notifier: NotificationService
 
     init() {
         let settings = PomodoroSettings()
         let notifier = NotificationService()
         notifier.requestAuthorization()
+        let stats = StatsStore()
         _settings = StateObject(wrappedValue: settings)
-        _timer = StateObject(wrappedValue: PomodoroTimer(settings: settings, notifier: notifier))
+        _stats = StateObject(wrappedValue: stats)
+        _timer = StateObject(wrappedValue: PomodoroTimer(settings: settings, notifier: notifier, stats: stats))
         self.notifier = notifier
     }
 
@@ -30,7 +33,27 @@ struct PomodoroApp: App {
         .windowResizability(.contentSize)
         .defaultPosition(.center)
         .windowStyle(.hiddenTitleBar)
+
+        Window("Statistics", id: AuxWindow.stats) {
+            StatsView(stats: stats)
+        }
+        .windowResizability(.contentSize)
+        .defaultPosition(.center)
+        .windowStyle(.hiddenTitleBar)
+
+        Window("Pomodoro", id: AuxWindow.floating) {
+            FloatingTimerView(timer: timer)
+        }
+        .windowResizability(.contentSize)
+        .defaultPosition(.topTrailing)
+        .windowStyle(.hiddenTitleBar)
     }
+}
+
+/// Identifiers for the auxiliary windows opened from the menu.
+enum AuxWindow {
+    static let stats = "stats"
+    static let floating = "floating"
 }
 
 /// Identifiers/helpers for the dedicated settings window.

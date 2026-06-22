@@ -12,13 +12,15 @@ final class PomodoroTimer: ObservableObject {
 
     private let settings: PomodoroSettings
     private let notifier: NotificationService
+    private let stats: StatsStore
     private var ticker: AnyCancellable?
     /// Wall-clock deadline; recomputed on every start/resume to avoid timer drift.
     private var deadline: Date?
 
-    init(settings: PomodoroSettings, notifier: NotificationService) {
+    init(settings: PomodoroSettings, notifier: NotificationService, stats: StatsStore = StatsStore()) {
         self.settings = settings
         self.notifier = notifier
+        self.stats = stats
         self.remaining = settings.duration(for: .focus)
     }
 
@@ -120,6 +122,9 @@ final class PomodoroTimer: ObservableObject {
         let finished = session
         pause()
         notifier.notifySessionEnded(finished, playSound: settings.playSound, soundName: settings.soundName)
+        if finished.isFocus {
+            stats.recordFocus(minutes: settings.focusMinutes)
+        }
         advance(countingCurrent: true)
         if settings.autoStartNext {
             start()

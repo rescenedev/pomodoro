@@ -49,30 +49,3 @@ struct CircleControlButton: View {
     }
 }
 
-/// Subtle text+icon footer action.
-struct FooterButton: View {
-    let systemName: String
-    let label: String
-    let action: () -> Void
-
-    @State private var hovering = false
-
-    var body: some View {
-        Button(action: action) {
-            HStack(spacing: 5) {
-                Image(systemName: systemName)
-                Text(label)
-            }
-            .font(.system(size: 12, weight: .medium))
-            .foregroundStyle(hovering ? .primary : .secondary)
-            .padding(.horizontal, 10)
-            .padding(.vertical, 6)
-            .background(
-                Capsule().fill(Color.primary.opacity(hovering ? 0.10 : 0))
-            )
-        }
-        .buttonStyle(.plain)
-        .onHover { hovering = $0 }
-        .animation(.easeOut(duration: 0.15), value: hovering)
-    }
-}

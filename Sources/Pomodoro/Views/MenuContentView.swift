@@ -117,16 +117,36 @@ struct MenuContentView: View {
     // MARK: - Footer
 
     private var footer: some View {
-        HStack {
-            FooterButton(systemName: "gearshape.fill", label: "Settings") {
+        HStack(spacing: 14) {
+            footerIcon("gearshape.fill", help: "Settings") {
                 SettingsWindow.activate()
                 openWindow(id: SettingsWindow.id)
             }
+            footerIcon("chart.bar.fill", help: "Statistics") {
+                SettingsWindow.activate()
+                openWindow(id: AuxWindow.stats)
+            }
+            footerIcon("pin.fill", help: "Float on top") {
+                SettingsWindow.activate()
+                openWindow(id: AuxWindow.floating)
+            }
             Spacer()
-            FooterButton(systemName: "power", label: "Quit") {
+            footerIcon("power", help: "Quit") {
                 NSApplication.shared.terminate(nil)
             }
         }
         .padding(.top, 2)
+    }
+
+    private func footerIcon(_ systemName: String, help: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Image(systemName: systemName)
+                .font(.system(size: 13, weight: .medium))
+                .foregroundStyle(.secondary)
+                .frame(width: 30, height: 26)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .help(help)
     }
 }
