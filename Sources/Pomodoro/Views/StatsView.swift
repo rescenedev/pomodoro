@@ -30,13 +30,10 @@ struct StatsView: View {
                     .foregroundStyle(.secondary)
             }
             Spacer()
-            HStack(alignment: .firstTextBaseline, spacing: 3) {
-                Text("\(summary.count)")
-                    .font(.system(size: 32, weight: .bold, design: .rounded))
-                    .monospacedDigit()
-                    .foregroundStyle(tint)
-                Text("🍅").font(.system(size: 16))
-            }
+            Text("\(summary.count)")
+                .font(.system(size: 32, weight: .bold, design: .rounded))
+                .monospacedDigit()
+                .foregroundStyle(tint)
         }
         .padding(14)
         .frame(maxWidth: .infinity)
