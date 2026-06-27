@@ -21,6 +21,7 @@ rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 cp "$BIN" "$APP/Contents/MacOS/Pomodoro"
 cp "$ROOT/scripts/Info.plist" "$APP/Contents/Info.plist"
+cp "$ROOT/scripts/AppIcon.icns" "$APP/Contents/Resources/AppIcon.icns"
 
 echo "==> Signing app (Developer ID, hardened runtime, secure timestamp)…"
 codesign --force --options runtime --timestamp --sign "$IDENTITY" "$APP"
