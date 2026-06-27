@@ -5,8 +5,8 @@ No dock icon, no window clutter — it lives entirely in your menu bar.
 
 **🌐 Website: https://rescenedev.github.io/pomodoro/**
 
-Also built for **iPhone** (full-screen timer with Live Activity & Dynamic Island)
-and **Apple Watch** — coming soon to the App Store.
+Also on **iPhone** (full-screen timer with Live Activity & Dynamic Island)
+and **Apple Watch** — **[Download on the App Store](https://apps.apple.com/app/id6782520704)**.
 
 ## Features
 

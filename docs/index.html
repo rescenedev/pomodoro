@@ -58,13 +58,9 @@
   .btn-ghost:hover { border-color: rgba(255,255,255,.4); }
   .btn-support { color: #1a1500; background: #ffd24a; }
   .btn-support:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(255, 210, 74, .35); }
+  .btn-appstore { color: #fff; background: #0a0a0c; border: 1px solid rgba(255,255,255,.18); }
+  .btn-appstore:hover { transform: translateY(-2px); border-color: rgba(255,255,255,.45); box-shadow: 0 12px 32px rgba(0,0,0,.4); }
   .cta { flex-wrap: wrap; justify-content: center; gap: 12px; }
-  .soon {
-    margin-top: 18px; color: var(--muted); font-size: 14px;
-    display: inline-flex; align-items: center; gap: 8px;
-    border: 1px dashed rgba(255,255,255,.18); border-radius: 999px;
-    padding: 8px 16px;
-  }
   .brew {
     margin-top: 22px; position: relative;
     display: inline-flex; align-items: center; gap: 10px;
@@ -111,11 +107,10 @@
 
     <div class="cta">
       <a class="btn btn-primary" href="https://github.com/rescenedev/pomodoro/releases/latest/download/Pomodoro.dmg">⬇ Download for macOS</a>
+      <a class="btn btn-appstore" href="https://apps.apple.com/app/id6782520704" target="_blank" rel="noopener">📱 App Store — iPhone &amp; Watch</a>
       <a class="btn btn-ghost" href="https://github.com/rescenedev/pomodoro">View on GitHub</a>
       <a class="btn btn-support" href="https://fairy.hada.io/@lumen" target="_blank" rel="noopener">💛 Support</a>
     </div>
-
-    <p class="soon">📱⌚ iPhone &amp; Apple Watch — coming soon to the App Store</p>
 
     <button class="brew" type="button" onclick="copyBrew()" title="Click to copy">
       <code id="brewCmd">brew tap rescenedev/tap &amp;&amp; brew install --cask rescenedev/tap/pomodoro</code>
