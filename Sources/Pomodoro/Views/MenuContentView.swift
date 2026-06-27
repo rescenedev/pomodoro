@@ -21,6 +21,23 @@ struct MenuContentView: View {
         .padding(.bottom, 16)
         .frame(width: 300)
         .background(backdrop)
+        .contentShape(Rectangle())
+        .gesture(
+            DragGesture(minimumDistance: 24)
+                .onEnded { value in
+                    guard abs(value.translation.width) > abs(value.translation.height) else { return }
+                    timer.select(value.translation.width < 0
+                        ? sessionShifted(by: 1)
+                        : sessionShifted(by: -1))
+                }
+        )
+    }
+
+    /// SessionType `offset` steps away from the current one, wrapping around.
+    private func sessionShifted(by offset: Int) -> SessionType {
+        let all = SessionType.allCases
+        let index = all.firstIndex(of: timer.session) ?? 0
+        return all[(index + offset + all.count) % all.count]
     }
 
     // MARK: - Background
